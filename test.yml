@@ -1,0 +1,19 @@
+---
+- hosts: linux
+  gather_facts: no
+  vars:
+    version: 2
+    timeout: 5s
+  tasks:
+    - name: find user name
+      shell: |-
+        echo "cpu型号: `cat /proc/cpuinfo | grep  name |uniq |awk '{print $6,$7}'`"
+        echo "cpu总核数： `grep -c 'model name' /proc/cpuinfo`"
+        echo "物理内存总量：`free -h | grep Mem | awk '{print $2}'`"
+        echo "已使用内存总量(操作系统)：`free -h | grep Mem | awk '{print $3}'`"
+        echo "剩余内存总量(操作系统)：`free -h | grep Mem | awk '{print $7}'`"
+        echo "操作系统磁盘总量:`df -Th |grep -E /yn$ | awk '{ print $3}'`"
+        echo "操作系统磁盘可用量:`df -Th |grep -E /yn$ | awk '{ print $5}'`"
+      register: taskResult
+    - name: '查看结果'
+        debug: var=taskResult.stdout
