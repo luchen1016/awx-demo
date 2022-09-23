@@ -3,7 +3,7 @@
   gather_facts: no
   vars:
     version: 2
-    timeout: 5s
+    timeout: 6s
   tasks:
     - name: find user name
       shell: |-
